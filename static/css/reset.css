@@ -1,0 +1,69 @@
+@charset "utf-8";
+
+/* #################### reset css #################### */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video{margin: 0; padding: 0; box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;}
+html, body, input, textarea, select, button, table, li, dd, p, b, span, em, strong{-webkit-text-size-adjust: none;}
+html{font-size: 10px; font-weight: 400; line-height: 1.1; color: #212121;}
+body{-webkit-text-size-adjust: none;}
+html, body{width: 100%; height: 100%;}
+h1, h2, h3, h4, h5, h6{font-size: 1.6rem;}
+table{border-collapse: collapse; border-spacing: 0;}
+table, fieldset, th, td, img{border: none 0;}
+td{word-break: break-all;}
+ul, ol, menu{list-style: none;}
+address, em{font-style: normal;}
+a, a:link, a:visited, a:hover, a:active, a:focus{text-decoration: none;}
+input, select, textarea{vertical-align: middle;}
+img, fieldset{border: 0;}
+img{font-size: 0; line-height: 0; vertical-align: top;}
+caption{visibility: hidden; overflow: hidden; width: 0; height: 0; font-size: 0; line-height: 0;}
+/* legend, label span, .blind{visibility: hidden; overflow: hidden; position: absolute; left: 0; top: 0; margin: 0; padding: 0 !important; width: 0 !important; height: 0 !important; font-size: 0 !important; line-height: 0 !important;} */
+label{cursor: pointer;}
+pre{white-space: pre-wrap; word-wrap: break-word;}
+button{display: inline-block; margin: 0; padding: 0; border: 0; background: none; box-shadow: none; text-align: center; cursor: pointer; vertical-align: middle;}
+button::-moz-focus-inner{margin: 0; padding: 0; border: 0;}
+
+
+/* #################### html5 ####################*/
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section{display: block;}
+
+
+/* #################### color #################### */
+ :root{
+	--color-black:#2c3439; 
+	--color-gray: #ced9bf;
+	--color-red: #e14842;
+	--color-orange: #f7bb2e;
+	--color-pureple: #614f89;
+	--color-pink: #fea4b9;
+	--color-green: #3b8457;
+	--color-yello: #f3b73e;
+	--color-dark-blue: #32424b;
+	--color-brown: #c09576;
+} 
+/* #################### display #################### */
+/* ---------- overflow ---------- */
+.x_hidden{overflow-x: hidden;}
+.y_hidden{overflow-y: hidden;}
+.scroll{overflow: scroll;}
+.scroll_off{position: fixed; overflow: hidden; height: 100%;}
+
+/* ---------- display ---------- */
+.show{display: block !important;}
+.hide{display: none !important;}
+
+/* ---------- clear ---------- */
+.clearfix{zoom: 1;}
+.clearfix::after{display: block; clear: both; content: ""; height: 0; visibility: hidden;}
+
+/* #################### font #################### */
+.ellipsis{display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+
+
+@media screen and (min-width: 901px) {
+	.pc{display: block !important;}
+	.tablet{display: block !important;}
+	.mobile{display: none !important;}
+}
