@@ -55,6 +55,7 @@ INSTALLED_APPS = [
      "django_bootstrap5",
     # local apps
     'accounts',
+    'mall_test',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +155,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # django-debug-toolbar
 INTERNAL_IPS = env.list("INTERNAL_IPS", default=['127.0.0.1'])
+
+
+
+
+# 포트원
+PORTONE_SHOP_ID = env.str("PORTONE_SHOP_ID", default="")
+PORTONE_API_KEY = env.str("PORTONE_API_KEY", default="")
+PORTONE_API_SECRET = env.str("PORTONE_API_SECRET", default="")
