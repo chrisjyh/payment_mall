@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     # local apps
     'accounts',
     'mall_test',
+    'mall',
 ]
 
 MIDDLEWARE = [
