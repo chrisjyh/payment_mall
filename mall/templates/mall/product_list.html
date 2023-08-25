@@ -1,0 +1,36 @@
+{% extends 'mall/base.html' %}
+{% load django_bootstrap5 %}
+{% load humanize %}
+{% load thumbnail %}
+
+{% block content %}
+    <div class="row">
+        {% for product in product_list %}
+            <div class="col-sm-6 col-lg-4 mb-3">
+                <div class="card">
+                    {% thumbnail product.photo "300x300" crop="center" as thumb %}
+                        <img src="{{ thumb.url }}" alt="{{ product.name }} 사진" class="card-img-top object-fit-cover">
+                    {% endthumbnail %}
+                    <div class="card-body"> 
+                        {{ product.category.name }}
+                        <h5 class="text-truncate">
+                            {{ product.name }}
+                        </h5>
+                        <div class="d-flex justify-content-between">
+                            <p>{{ product.price|intcomma }} 원</p>
+                            <div>
+                                <a href="#" class="btn btn-primary">장바구니</a>
+                            </div>     
+                        </div>
+                        <!-- intcoma는 가격의 3자리마다 , 붙여줌 -->
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="mt-3 mb-3">
+        <!-- url=request.get_full_path 페이징이 될때 현재주소를 반영하여 검색하게함 ex) 남여 했을때 페이징하면 남여에서 페이징 -->
+        {% bootstrap_pagination page_obj url=request.get_full_path %}
+    </div>
+{% endblock  %}

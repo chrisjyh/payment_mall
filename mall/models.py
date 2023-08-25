@@ -45,4 +45,6 @@ class Product(models.Model):
         return f"<{self.pk}> {self.name}"
     class Meta:
         verbose_name = verbose_name_plural = "상품"
+        # pk기준으로 내림차순, default 설정
+        ordering = ["-pk"]
     
