@@ -1,5 +1,8 @@
+from django.core.validators import MinValueValidator
 from django.db import models
+from django.db.models import UniqueConstraint
 
+from accounts.models import User
 # Create your models here.
 
 # 상품 분류 모델
@@ -47,4 +50,29 @@ class Product(models.Model):
         verbose_name = verbose_name_plural = "상품"
         # pk기준으로 내림차순, default 설정
         ordering = ["-pk"]
-    
+
+class CartProduct(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        db_constraint=False,
+        related_name="cart_product_set",
+    )
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        db_constraint=False,
+    )
+    quantity = models.PositiveBigIntegerField(
+        default=1,
+        validators=[
+            MinValueValidator(1),
+        ]
+    )
+    def __str__(self):
+        return f"<{self.pk}> {self.product.name} - {self.quantity}"
+    class Meta:
+        verbose_name_plural = verbose_name = "장바구니 상품"
+        constraints = [
+            UniqueConstraint(fields=["user", "product"], name="unique_user_product"),
+        ]
