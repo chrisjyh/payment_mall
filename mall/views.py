@@ -1,8 +1,12 @@
 from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render
-from mall.models import Product
+from mall.models import Product, CartProduct
 from django.views.generic import ListView
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
+from django.shortcuts import redirect
 
 # Create your views here.
 # def product_list(request):
@@ -19,7 +23,7 @@ from django.views.generic import ListView
 # 페이징기능을 장고에서 제공함 listview 
 class ProductListView(ListView):
     model = Product
-    queryset = Product.objects.all().select_related("category")
+    queryset = Product.objects.filter(status=Product.Status.ACTIVE).select_related("category")
     # 페이징 갯수
     paginate_by = 12
     
@@ -34,3 +38,25 @@ class ProductListView(ListView):
 
 #  클래스일때 url에서 view로 연결할때
 product_list = ProductListView.as_view()
+
+@login_required
+def add_to_cart(request, product_pk):
+    request.user
+    product_qs = Product.objects.filter(
+        status=Product.Status.ACTIVE
+    )
+    product = get_object_or_404(product_qs, pk=product_pk)
+    quantity = int(request.GET.get("quantity",1))
+    
+    cart_product, is_created = CartProduct.objects.get_or_create(
+        user=request.user,
+        product=product,
+        defaults={"quantity": quantity},
+    )
+    if not is_created:
+        cart_product.quantity += quantity
+        cart_product.save()
+    
+    messages.success(request, "장바구니에 추가했습니다.")
+    
+    return redirect("product_list")
