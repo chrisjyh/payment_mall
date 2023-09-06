@@ -1,6 +1,7 @@
 from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render
+from django.http import HttpResponse
 from mall.models import Product, CartProduct
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
@@ -9,6 +10,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.forms import modelformset_factory
 from .forms import CartProductForm
+from django.views.decorators.http import require_POST
 # Create your views here.
 # def product_list(request):
 #     # select_related 하면 category과 관련된것을 조회해서 데이터를 불러줌
@@ -81,6 +83,7 @@ def cart_detail(request):
     })
 
 @login_required
+@require_POST
 # 장바구니에 상품 추가 하는 기능
 def add_to_cart(request, product_pk):
     request.user
@@ -101,9 +104,9 @@ def add_to_cart(request, product_pk):
         cart_product.quantity += quantity
         cart_product.save()
     
-    messages.success(request, "장바구니에 추가했습니다.")
+    # messages.success(request, "장바구니에 추가했습니다.")
     
     # 장바구니 추가될시 페이지가 초기화면으로 이동하는 문제
-    redirect_url = request.META.get("HTTP_REFERER", "product_list")
-    
-    return redirect(redirect_url)
+    # redirect_url = request.META.get("HTTP_REFERER", "product_list")
+    # return redirect(redirect_url)
+    return HttpResponse("ok")

@@ -60,7 +60,10 @@
       </main>
     
     </div>
-
+    <script>window.csrf_token = "{{ csrf_token }}";</script>
+    <script src="{% static "utils/alert-modal.js" %}"></script>
+    <!-- extra-script라는 임의의 block 생성 html코드와 js 코드가 뒤섞이면 관리가 어렵기때문에 분리 -->
+    {% block extra-script %}{% endblock extra-script %}
   </body>
 
 </html>
