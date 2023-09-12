@@ -2,7 +2,8 @@ from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.http import HttpResponse
-from mall.models import Product, CartProduct
+from mall.models import Product, CartProduct, Order, OrderPayment
+from django.conf import settings
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
@@ -10,6 +11,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.forms import modelformset_factory
 from .forms import CartProductForm
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 # Create your views here.
 # def product_list(request):
@@ -110,3 +112,63 @@ def add_to_cart(request, product_pk):
     # redirect_url = request.META.get("HTTP_REFERER", "product_list")
     # return redirect(redirect_url)
     return HttpResponse("ok")
+@login_required
+def order_list(request):
+    order_qs = Order.objects.all().filter(user=request.user)
+    return render(request,"mall/order_list.html",{"order_list": order_qs})
+
+@login_required
+def order_new(request):
+    cart_product_qs = CartProduct.objects.filter(user=request.user)
+    order = Order.create_from_cart(request.user, cart_product_qs)
+    cart_product_qs.delete()
+    
+    return redirect("order_pay", order.pk)
+
+@login_required
+def order_pay(request, pk):
+    order = get_object_or_404(Order, pk=pk, user=request.user)
+    messages.warning(request, "구현예정")
+    
+    if not order.can_pay():
+        messages.error(request, "결제를 할 수없는 주문")
+        # return redirect("order_detail", order.pk)
+        # 아래의 코드는 모델의 get_absolute_url코드가 없으면 오류발생
+        return redirect(order)
+    
+    payment = OrderPayment.create_by_order(order)
+    payment_props = {
+        "merchant_uid": payment.merchant_uid,
+        "name": payment.name,
+        "amount": payment.desired_amount,
+        "buyer_name": payment.buyer_name,
+        "buyer_email": payment.buyer_email,
+        
+    }
+    
+    return render(
+        request, 
+        "mall/order_pay.html", 
+        {
+            "payment_props": payment_props,
+            "portone_shop_id": settings.PORTONE_SHOP_ID,
+            "next_url": reverse("order_check", args=[order.pk, payment.pk]),
+        }
+    )
+    
+@login_required
+def order_check(request, order_pk, payment_pk):
+    payment = get_object_or_404(OrderPayment, pk=payment_pk, order__pk=order_pk)
+    payment.update()
+    return redirect("order_detail", order_pk)
+
+@login_required
+def order_detail(request, pk):
+    order = get_object_or_404(Order, pk=pk, user=request.user)
+    return render(
+        request,
+        "mall/order_detail.html",
+        {
+            "order": order,
+        },
+    )
