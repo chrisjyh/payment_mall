@@ -38,7 +38,11 @@ SECRET_KEY = env.str(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=True)  # 1,t, true
 
+# 허용하는 주소 등록
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
+
+# csrf토큰을 허용하는 도메인등록
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 
 
 # Application definition
